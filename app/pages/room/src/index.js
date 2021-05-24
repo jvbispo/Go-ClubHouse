@@ -1,15 +1,15 @@
 import { constants } from "../../_shared/constants.js";
-import SocketBuilder from "../../_shared/socket.js";
+import RoomSocketBuilder from "./utils/roomSocket.js";
 
-const socketBuilder = new SocketBuilder({
+const socketBuilder = new RoomSocketBuilder({
     socketUrl: constants.socketUrl,
     namespace: constants.socketNameSpaces.room,
 })
 
-const socket = socketBuilder.setOnUserConnected((user) => console.log('user connected', user)).
-socketBuilder.setOnUserDisconnected((user) => console.log('user disconnected', user)).
-socketBuilder.build();
-
+socketBuilder.setOnUserConnected((user) => console.log('user connected', user));
+socketBuilder.setOnUserDisconnected((user) => console.log('user disconnected', user));
+socketBuilder.setOnRoomUpdated((room) => console.log('room list', room));
+const socket = socketBuilder.build();
 
 
 const room = {
@@ -24,3 +24,4 @@ const user = {
 }
 
 socket.emit(constants.events.JOIN_ROOM, {user, room});
+console.log('b')
